@@ -322,45 +322,45 @@ namespace realsense_camera
             ", Camera FW: " + camera_fw;
       checkError();
 
-      std::string camera_warning_msg = checkFirmwareValidation("camera", camera_fw, camera_name, camera_serial_number);
-
-      if (!camera_warning_msg.empty())
-      {
-        warning_msg = warning_msg + "\n\t\t\t\t- " + camera_warning_msg;
-      }
-
-      if (rs_supports(rs_detected_device, RS_CAPABILITIES_ADAPTER_BOARD, &rs_error_))
-      {
-        const char * adapter_fw = rs_get_device_info(rs_detected_device,
-            RS_CAMERA_INFO_ADAPTER_BOARD_FIRMWARE_VERSION, &rs_error_);
-        checkError();
-        detected_camera_msg = detected_camera_msg + ", Adapter FW: " + adapter_fw;
-        std::string adapter_warning_msg = checkFirmwareValidation("adapter", adapter_fw, camera_name,
-              camera_serial_number);
-        if (!adapter_warning_msg.empty())
-        {
-          warning_msg = warning_msg + "\n\t\t\t\t- " + adapter_warning_msg;
-        }
-      }
-
-      if (rs_supports(rs_detected_device, RS_CAPABILITIES_MOTION_EVENTS, &rs_error_))
-      {
-        const char * motion_module_fw = rs_get_device_info(rs_detected_device,
-            RS_CAMERA_INFO_MOTION_MODULE_FIRMWARE_VERSION, &rs_error_);
-        checkError();
-        detected_camera_msg = detected_camera_msg + ", Motion Module FW: " + motion_module_fw;
-        std::string motion_module_warning_msg = checkFirmwareValidation("motion_module", motion_module_fw, camera_name,
-              camera_serial_number);
-        if (!motion_module_warning_msg.empty())
-        {
-          warning_msg = warning_msg + "\n\t\t\t\t- " + motion_module_warning_msg;
-        }
-      }
-      ROS_INFO_STREAM(nodelet_name_ + detected_camera_msg);
-      if (warning_msg != " - Detected unvalidated firmware:")
-      {
-        ROS_WARN_STREAM(nodelet_name_ + warning_msg);
-      }
+    //   std::string camera_warning_msg = checkFirmwareValidation("camera", camera_fw, camera_name, camera_serial_number);
+      //
+    //   if (!camera_warning_msg.empty())
+    //   {
+    //     warning_msg = warning_msg + "\n\t\t\t\t- " + camera_warning_msg;
+    //   }
+      //
+    //   if (rs_supports(rs_detected_device, RS_CAPABILITIES_ADAPTER_BOARD, &rs_error_))
+    //   {
+    //     const char * adapter_fw = rs_get_device_info(rs_detected_device,
+    //         RS_CAMERA_INFO_ADAPTER_BOARD_FIRMWARE_VERSION, &rs_error_);
+    //     checkError();
+    //     detected_camera_msg = detected_camera_msg + ", Adapter FW: " + adapter_fw;
+    //     std::string adapter_warning_msg = checkFirmwareValidation("adapter", adapter_fw, camera_name,
+    //           camera_serial_number);
+    //     if (!adapter_warning_msg.empty())
+    //     {
+    //       warning_msg = warning_msg + "\n\t\t\t\t- " + adapter_warning_msg;
+    //     }
+    //   }
+      //
+    //   if (rs_supports(rs_detected_device, RS_CAPABILITIES_MOTION_EVENTS, &rs_error_))
+    //   {
+    //     const char * motion_module_fw = rs_get_device_info(rs_detected_device,
+    //         RS_CAMERA_INFO_MOTION_MODULE_FIRMWARE_VERSION, &rs_error_);
+    //     checkError();
+    //     detected_camera_msg = detected_camera_msg + ", Motion Module FW: " + motion_module_fw;
+    //     std::string motion_module_warning_msg = checkFirmwareValidation("motion_module", motion_module_fw, camera_name,
+    //           camera_serial_number);
+    //     if (!motion_module_warning_msg.empty())
+    //     {
+    //       warning_msg = warning_msg + "\n\t\t\t\t- " + motion_module_warning_msg;
+    //     }
+    //   }
+    //   ROS_INFO_STREAM(nodelet_name_ + detected_camera_msg);
+    //   if (warning_msg != " - Detected unvalidated firmware:")
+    //   {
+    //     ROS_WARN_STREAM(nodelet_name_ + warning_msg);
+    //   }
     }
 
     return camera_type_index;

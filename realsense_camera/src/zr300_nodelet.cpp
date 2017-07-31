@@ -674,28 +674,28 @@ namespace realsense_camera
     }
     checkError();
 
-    // Get offset between base frame and fisheye frame
-    rs_get_device_extrinsics(rs_device_, RS_STREAM_FISHEYE, RS_STREAM_COLOR, &color2fisheye_extrinsic_, &rs_error_);
-    if (rs_error_)
-    {
-      ROS_ERROR_STREAM(nodelet_name_ << " - Verify camera is calibrated!");
-    }
-    checkError();
-
-    // Get offset between base frame and imu frame
-    rs_get_motion_extrinsics_from(rs_device_, RS_STREAM_COLOR, &color2imu_extrinsic_, &rs_error_);
-    if (rs_error_)
-    {
-/*  Temporarily hardcoding the values until fully supported by librealsense API.  */
-      // ROS_ERROR_STREAM(nodelet_name_ << " - Verify camera is calibrated!");
-      ROS_WARN_STREAM(nodelet_name_ << " - Using Hardcoded extrinsic for IMU.");
-      rs_free_error(rs_error_);
-      rs_error_ = NULL;
-
-      color2imu_extrinsic_.translation[0] = -0.07;
-      color2imu_extrinsic_.translation[1] = 0.0;
-      color2imu_extrinsic_.translation[2] = 0.0;
-    }
+//     // Get offset between base frame and fisheye frame
+//     rs_get_device_extrinsics(rs_device_, RS_STREAM_FISHEYE, RS_STREAM_COLOR, &color2fisheye_extrinsic_, &rs_error_);
+//     if (rs_error_)
+//     {
+//       ROS_ERROR_STREAM(nodelet_name_ << " - Verify camera is calibrated!");
+//     }
+//     checkError();
+//
+//     // Get offset between base frame and imu frame
+//     rs_get_motion_extrinsics_from(rs_device_, RS_STREAM_COLOR, &color2imu_extrinsic_, &rs_error_);
+//     if (rs_error_)
+//     {
+// /*  Temporarily hardcoding the values until fully supported by librealsense API.  */
+//       // ROS_ERROR_STREAM(nodelet_name_ << " - Verify camera is calibrated!");
+//       ROS_WARN_STREAM(nodelet_name_ << " - Using Hardcoded extrinsic for IMU.");
+//       rs_free_error(rs_error_);
+//       rs_error_ = NULL;
+//
+//       color2imu_extrinsic_.translation[0] = -0.07;
+//       color2imu_extrinsic_.translation[1] = 0.0;
+//       color2imu_extrinsic_.translation[2] = 0.0;
+//     }
     // checkError();
   }
 
