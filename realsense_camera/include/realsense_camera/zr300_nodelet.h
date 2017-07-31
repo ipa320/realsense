@@ -1,5 +1,5 @@
 /******************************************************************************
- Copyright (c) 2016, Intel Corporation
+ Copyright (c) 2017, Intel Corporation
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -29,54 +29,40 @@
  *******************************************************************************/
 
 #pragma once
-#ifndef REALSENSE_CAMERA_ZR300_NODELET_H
-#define REALSENSE_CAMERA_ZR300_NODELET_H
+#ifndef REALSENSE_CAMERA_R200_NODELET_H
+#define REALSENSE_CAMERA_R200_NODELET_H
 
 #include <string>
 #include <vector>
 
 #include <dynamic_reconfigure/server.h>
-#include <sensor_msgs/Imu.h>
 
 #include <realsense_camera/zr300_paramsConfig.h>
-#include <realsense_camera/IMUInfo.h>
-#include <realsense_camera/GetIMUInfo.h>
-#include <realsense_camera/base_nodelet.h>
+#include <realsense_camera/sync_nodelet.h>
 
 namespace realsense_camera
 {
-class ZR300Nodelet: public realsense_camera::BaseNodelet
+class ZR300Nodelet: public realsense_camera::SyncNodelet
 {
 public:
-  ~ZR300Nodelet();
   void onInit();
 
 protected:
   // Member Variables.
-  ros::ServiceServer get_imu_info_;
+  rs_option edge_options_[4] =
+  {
+    RS_OPTION_R200_AUTO_EXPOSURE_LEFT_EDGE,
+    RS_OPTION_R200_AUTO_EXPOSURE_TOP_EDGE,
+    RS_OPTION_R200_AUTO_EXPOSURE_RIGHT_EDGE,
+    RS_OPTION_R200_AUTO_EXPOSURE_BOTTOM_EDGE
+  };
   boost::shared_ptr<dynamic_reconfigure::Server<realsense_camera::zr300_paramsConfig>> dynamic_reconf_server_;
-  bool enable_imu_;
-  std::string imu_frame_id_;
-  std::string imu_optical_frame_id_;
-  geometry_msgs::Vector3 imu_angular_vel_;
-  geometry_msgs::Vector3 imu_linear_accel_;
-  double imu_ts_;
-  double prev_imu_ts_;
-  ros::Publisher imu_publisher_;
-  boost::shared_ptr<boost::thread> imu_thread_;
-  std::function<void(rs::motion_data)> motion_handler_;
-  std::function<void(rs::timestamp_data)> timestamp_handler_;
-  std::mutex imu_mutex_;
 
-  rs_extrinsics color2ir2_extrinsic_;      // color frame is base frame
-  rs_extrinsics color2fisheye_extrinsic_;  // color frame is base frame
-  rs_extrinsics color2imu_extrinsic_;      // color frame is base frame
+  rs_extrinsics color2ir2_extrinsic_;  // color frame is base frame
 
   // Member Functions.
   void getParameters();
   void advertiseTopics();
-  void advertiseServices();
-  bool getIMUInfo(realsense_camera::GetIMUInfo::Request & req, realsense_camera::GetIMUInfo::Response & res);
   std::vector<std::string> setDynamicReconfServer();
   void startDynamicReconfCallback();
   void setDynamicReconfigDepthControlPreset(int preset);
@@ -85,12 +71,6 @@ protected:
   void getCameraExtrinsics();
   void publishStaticTransforms();
   void publishDynamicTransforms();
-  void publishIMU();
-  void setStreams();
-  void setIMUCallbacks();
-  void setFrameCallbacks();
-  std::function<void(rs::frame f)> fisheye_frame_handler_, ir2_frame_handler_;
-  void stopIMU();
 };
 }  // namespace realsense_camera
-#endif  // REALSENSE_CAMERA_ZR300_NODELET_H
+#endif  // REALSENSE_CAMERA_R200_NODELET_H
