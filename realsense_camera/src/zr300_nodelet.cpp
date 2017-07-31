@@ -85,11 +85,11 @@ namespace realsense_camera
 
     BaseNodelet::onInit();
 
-    if (enable_imu_ == true)
-    {
-      imu_thread_ =
-          boost::shared_ptr<boost::thread>(new boost::thread(boost::bind(&ZR300Nodelet::publishIMU, this)));
-    }
+    // if (enable_imu_ == true)
+    // {
+    //   imu_thread_ =
+    //       boost::shared_ptr<boost::thread>(new boost::thread(boost::bind(&ZR300Nodelet::publishIMU, this)));
+    // }
   }
 
   /*
@@ -127,12 +127,12 @@ namespace realsense_camera
     image_transport::ImageTransport ir2_image_transport(ir2_nh);
     camera_publisher_[RS_STREAM_INFRARED2] = ir2_image_transport.advertiseCamera(IR2_TOPIC, 1);
 
-    ros::NodeHandle fisheye_nh(nh_, FISHEYE_NAMESPACE);
-    image_transport::ImageTransport fisheye_image_transport(fisheye_nh);
-    camera_publisher_[RS_STREAM_FISHEYE] = fisheye_image_transport.advertiseCamera(FISHEYE_TOPIC, 1);
-
-    ros::NodeHandle imu_nh(nh_, IMU_NAMESPACE);
-    imu_publisher_ = imu_nh.advertise<sensor_msgs::Imu>(IMU_TOPIC, 1000);
+    // ros::NodeHandle fisheye_nh(nh_, FISHEYE_NAMESPACE);
+    // image_transport::ImageTransport fisheye_image_transport(fisheye_nh);
+    // camera_publisher_[RS_STREAM_FISHEYE] = fisheye_image_transport.advertiseCamera(FISHEYE_TOPIC, 1);
+    //
+    // ros::NodeHandle imu_nh(nh_, IMU_NAMESPACE);
+    // imu_publisher_ = imu_nh.advertise<sensor_msgs::Imu>(IMU_TOPIC, 1000);
   }
 
   /*
@@ -141,7 +141,7 @@ namespace realsense_camera
   void ZR300Nodelet::advertiseServices()
   {
     BaseNodelet::advertiseServices();
-    get_imu_info_ = pnh_.advertiseService(IMU_INFO_SERVICE, &ZR300Nodelet::getIMUInfo, this);
+    //get_imu_info_ = pnh_.advertiseService(IMU_INFO_SERVICE, &ZR300Nodelet::getIMUInfo, this);
   }
 
   /*
@@ -501,17 +501,17 @@ namespace realsense_camera
       }
     }
 
-    rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_EXPOSURE,
-        config.fisheye_exposure, 0);
-    rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_GAIN, config.fisheye_gain, 0);
-    rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_ENABLE_AUTO_EXPOSURE, config.fisheye_enable_auto_exposure, 0);
-    rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_MODE, config.fisheye_auto_exposure_mode, 0);
-    rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_ANTIFLICKER_RATE,
-        config.fisheye_auto_exposure_antiflicker_rate, 0);
-    rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_PIXEL_SAMPLE_RATE,
-        config.fisheye_auto_exposure_pixel_sample_rate, 0);
-    rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_SKIP_FRAMES,
-        config.fisheye_auto_exposure_skip_frames, 0);
+    // rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_EXPOSURE,
+    //     config.fisheye_exposure, 0);
+    // rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_GAIN, config.fisheye_gain, 0);
+    // rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_ENABLE_AUTO_EXPOSURE, config.fisheye_enable_auto_exposure, 0);
+    // rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_MODE, config.fisheye_auto_exposure_mode, 0);
+    // rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_ANTIFLICKER_RATE,
+    //     config.fisheye_auto_exposure_antiflicker_rate, 0);
+    // rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_PIXEL_SAMPLE_RATE,
+    //     config.fisheye_auto_exposure_pixel_sample_rate, 0);
+    // rs_set_device_option(rs_device_, RS_OPTION_FISHEYE_AUTO_EXPOSURE_SKIP_FRAMES,
+    //     config.fisheye_auto_exposure_skip_frames, 0);
     rs_set_device_option(rs_device_, RS_OPTION_FRAMES_QUEUE_SIZE, config.frames_queue_size, 0);
     rs_set_device_option(rs_device_, RS_OPTION_HARDWARE_LOGGER_ENABLED, config.hardware_logger_enabled, 0);
   }
@@ -576,16 +576,16 @@ namespace realsense_camera
     // enable camera streams
     BaseNodelet::setStreams();
 
-    if (enable_imu_ == true)
-    {
-      // enable IMU
-      ROS_INFO_STREAM(nodelet_name_ << " - Enabling IMU");
-      setIMUCallbacks();
-      rs_enable_motion_tracking_cpp(rs_device_, new rs::motion_callback(motion_handler_),
-          new rs::timestamp_callback(timestamp_handler_), &rs_error_);
-      checkError();
-      rs_source_ = RS_SOURCE_ALL;  // overrides default to enable motion tracking
-    }
+    // if (enable_imu_ == true)
+    // {
+    //   // enable IMU
+    //   ROS_INFO_STREAM(nodelet_name_ << " - Enabling IMU");
+    //   setIMUCallbacks();
+    //   rs_enable_motion_tracking_cpp(rs_device_, new rs::motion_callback(motion_handler_),
+    //       new rs::timestamp_callback(timestamp_handler_), &rs_error_);
+    //   checkError();
+    //   rs_source_ = RS_SOURCE_ALL;  // overrides default to enable motion tracking
+    // }
   }
 
   /*
@@ -641,19 +641,19 @@ namespace realsense_camera
     // call base nodelet method
     BaseNodelet::setFrameCallbacks();
 
-    fisheye_frame_handler_ = [&](rs::frame frame)  // NOLINT(build/c++11)
-    {
-      publishTopic(RS_STREAM_FISHEYE, frame);
-    };
+    // fisheye_frame_handler_ = [&](rs::frame frame)  // NOLINT(build/c++11)
+    // {
+    //   publishTopic(RS_STREAM_FISHEYE, frame);
+    // };
 
     ir2_frame_handler_ = [&](rs::frame frame)  // NOLINT(build/c++11)
     {
       publishTopic(RS_STREAM_INFRARED2, frame);
     };
 
-    rs_set_frame_callback_cpp(rs_device_, RS_STREAM_FISHEYE,
-        new rs::frame_callback(fisheye_frame_handler_), &rs_error_);
-    checkError();
+    // rs_set_frame_callback_cpp(rs_device_, RS_STREAM_FISHEYE,
+    //     new rs::frame_callback(fisheye_frame_handler_), &rs_error_);
+    // checkError();
 
     rs_set_frame_callback_cpp(rs_device_, RS_STREAM_INFRARED2, new rs::frame_callback(ir2_frame_handler_), &rs_error_);
     checkError();
@@ -824,37 +824,37 @@ namespace realsense_camera
     dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
           frame_id_[RS_STREAM_INFRARED2], optical_frame_id_[RS_STREAM_INFRARED2]));
 
-    // Transform base frame to fisheye frame
-    tr.setOrigin(tf::Vector3(
-           color2fisheye_extrinsic_.translation[2],
-          -color2fisheye_extrinsic_.translation[0],
-          -color2fisheye_extrinsic_.translation[1]));
-    tr.setRotation(tf::Quaternion(0, 0, 0, 1));
-    dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
-          base_frame_id_, frame_id_[RS_STREAM_FISHEYE]));
-
-    // Transform fisheye frame to fisheye optical frame
-    tr.setOrigin(tf::Vector3(0, 0, 0));
-    q.setRPY(-M_PI/2, 0.0, -M_PI/2);
-    tr.setRotation(q);
-    dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
-          frame_id_[RS_STREAM_FISHEYE], optical_frame_id_[RS_STREAM_FISHEYE]));
-
-    // Transform base frame to imu frame
-    tr.setOrigin(tf::Vector3(
-           color2imu_extrinsic_.translation[2],
-          -color2imu_extrinsic_.translation[0],
-          -color2imu_extrinsic_.translation[1]));
-    tr.setRotation(tf::Quaternion(0, 0, 0, 1));
-    dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
-          base_frame_id_, imu_frame_id_));
-
-    // Transform imu frame to imu optical frame
-    tr.setOrigin(tf::Vector3(0, 0, 0));
-    q.setRPY(-M_PI/2, 0.0, -M_PI/2);
-    tr.setRotation(q);
-    dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
-          imu_frame_id_, imu_optical_frame_id_));
+    // // Transform base frame to fisheye frame
+    // tr.setOrigin(tf::Vector3(
+    //        color2fisheye_extrinsic_.translation[2],
+    //       -color2fisheye_extrinsic_.translation[0],
+    //       -color2fisheye_extrinsic_.translation[1]));
+    // tr.setRotation(tf::Quaternion(0, 0, 0, 1));
+    // dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
+    //       base_frame_id_, frame_id_[RS_STREAM_FISHEYE]));
+    //
+    // // Transform fisheye frame to fisheye optical frame
+    // tr.setOrigin(tf::Vector3(0, 0, 0));
+    // q.setRPY(-M_PI/2, 0.0, -M_PI/2);
+    // tr.setRotation(q);
+    // dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
+    //       frame_id_[RS_STREAM_FISHEYE], optical_frame_id_[RS_STREAM_FISHEYE]));
+    //
+    // // Transform base frame to imu frame
+    // tr.setOrigin(tf::Vector3(
+    //        color2imu_extrinsic_.translation[2],
+    //       -color2imu_extrinsic_.translation[0],
+    //       -color2imu_extrinsic_.translation[1]));
+    // tr.setRotation(tf::Quaternion(0, 0, 0, 1));
+    // dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
+    //       base_frame_id_, imu_frame_id_));
+    //
+    // // Transform imu frame to imu optical frame
+    // tr.setOrigin(tf::Vector3(0, 0, 0));
+    // q.setRPY(-M_PI/2, 0.0, -M_PI/2);
+    // tr.setRotation(q);
+    // dynamic_tf_broadcaster_.sendTransform(tf::StampedTransform(tr, transform_ts_,
+    //       imu_frame_id_, imu_optical_frame_id_));
   }
 
   /*
